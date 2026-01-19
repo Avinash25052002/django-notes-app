@@ -1,9 +1,10 @@
+# Base image
 FROM python:3.9
 
 # Set working directory where manage.py exists
 WORKDIR /app
 
-# Copy requirements
+# Copy only requirements first (for caching)
 COPY requirements.txt .
 
 # Install system dependencies
@@ -15,14 +16,18 @@ RUN apt-get update \
 RUN pip install mysqlclient
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy entire project
+# Copy the entire project
 COPY . .
 
-# Expose port
+# Expose port for Django
 EXPOSE 8000
 
-# Run Django server
+# Optional: run migrations before starting server
+# CMD ["sh", "-c", "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"]
+
+# Start Django development server
 CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+
 
 
 
