@@ -1,5 +1,6 @@
 FROM python:3.9
 
+# Set working directory where manage.py exists
 WORKDIR /app
 
 # Copy requirements
@@ -20,7 +21,7 @@ COPY . .
 # Expose port
 EXPOSE 8000
 
-# Run Django development server
+# Run Django server
 CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
 
 
